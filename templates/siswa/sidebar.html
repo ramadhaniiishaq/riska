@@ -1,0 +1,36 @@
+<div id="sidebar-wrapper" style="min-width: 220px;">
+    <div class="sidebar-heading text-center py-3 fw-bold">
+        {{ session.get('nama_siswa') or 'Siswa' }}
+    </div>
+    <div class="list-group list-group-flush">
+        <a href="{{ url_for('siswa_dashboard') }}" class="list-group-item list-group-item-action">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#infoModal">
+            <i class="fas fa-info-circle me-2"></i> Info Akun
+        </a>
+        <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action text-danger">
+            <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+    </div>
+</div>
+
+<!-- Modal Info Akun -->
+<div class="modal fade" id="infoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #FBC3C1;">
+                <h5 class="modal-title text-white"><i class="fas fa-user me-2"></i>Info Akun</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nama:</strong> {{ session.nama_siswa }}</p>
+                <p><strong>NIS:</strong> {{ session.nis }}</p>
+                <p><strong>Role:</strong> Siswa</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>

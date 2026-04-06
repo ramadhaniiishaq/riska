@@ -1,0 +1,136 @@
+{% extends "base_siswa.html" %}
+
+{% block title %}Dashboard Siswa{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Welcome Banner -->
+<div class="alert alert-primary bg-gradient-primary text-white border-0 mb-4">
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0">
+            <i class="fas fa-graduation-cap fa-3x"></i>
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <h4 class="mb-1">Selamat Datang, {{ nama_siswa }}!</h4>
+            <p class="mb-0 opacity-75">Temukan dan daftarkan diri Anda ke berbagai ekskul yang tersedia</p>
+        </div>
+    </div>
+</div>
+
+<!-- Statistik Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Total Ekskul</h6>
+                        <h2 class="mb-0">{{ ekskul|default(0) }}</h2>
+                        <small>Tersedia</small>
+                    </div>
+                    <i class="fas fa-book fa-3x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Total Pendaftaran</h6>
+                        <h2 class="mb-0">{{ total_daftar|default(0) }}</h2>
+                        <small>Ekskul didaftar</small>
+                    </div>
+                    <i class="fas fa-clipboard-list fa-3x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Diterima</h6>
+                        <h2 class="mb-0">{{ total_diterima|default(0) }}</h2>
+                        <small>Pendaftaran diterima</small>
+                    </div>
+                    <i class="fas fa-check-circle fa-3x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Rekomendasi Ekskul -->
+<div class="card mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">
+            <i class="fas fa-star text-warning me-2"></i>Rekomendasi Ekskul untuk Anda
+        </h5>
+    </div>
+    <div class="card-body">
+        {% if rekomendasi %}
+        <div class="row g-4">
+            {% for e in rekomendasi %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ e.nama_ekskul }}</h5>
+                        <p class="card-text text-muted small">{{ e.deskripsi[:100] }}{% if e.deskripsi|length > 100 %}...{% endif %}</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>{{ e.pembina }}<br>
+                                    <i class="fas fa-clock me-1"></i>{{ e.jadwal }}
+                                </small>
+                            </div>
+                            <form method="POST" action="{{ url_for('daftar_ekskul', id_ekskul=e.id_ekskul) }}">
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-pen me-1"></i>Daftar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-smile-wink fa-4x text-muted mb-3 d-block"></i>
+            <p class="text-muted">Semua ekskul sudah Anda daftar! Silakan cek status pendaftaran Anda.</p>
+            <a href="{{ url_for('siswa_ekskul_saya') }}" class="btn btn-primary">Lihat Ekskul Saya</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Tombol Aksi Cepat -->
+<div class="row">
+    <div class="col-md-6">
+        <a href="{{ url_for('semua_ekskul') }}" class="text-decoration-none">
+            <div class="card text-center card-hover">
+                <div class="card-body py-4">
+                    <i class="fas fa-list fa-3x text-primary mb-3"></i>
+                    <h5 class="mb-0">Lihat Semua Ekskul</h5>
+                    <small class="text-muted">Temukan ekskul yang sesuai dengan minat Anda</small>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a href="{{ url_for('siswa_ekskul_saya') }}" class="text-decoration-none">
+            <div class="card text-center card-hover">
+                <div class="card-body py-4">
+                    <i class="fas fa-bookmark fa-3x text-success mb-3"></i>
+                    <h5 class="mb-0">Ekskul Saya</h5>
+                    <small class="text-muted">Lihat status pendaftaran Anda</small>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Kelola Siswa{% endblock %}
+{% block page_title %}Kelola Siswa{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-users me-2 text-primary"></i>Daftar Siswa</h5>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
+            <i class="fas fa-user-plus me-2"></i>Tambah Siswa
+        </button>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>NIS</th>
+                        <th>Nama Siswa</th>
+                        <th>Kelas</th>
+                        <th>Email</th>
+                        <th>Total Daftar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in siswa %}
+                    <tr>
+                        <td>{{ s.id_siswa }}</td>
+                        <td><strong>{{ s.nis }}</strong></td>
+                        <td>{{ s.nama_siswa }}</td>
+                        <td>{{ s.kelas }}</td>
+                        <td>{{ s.email or '-' }}</td>
+                        <td>
+                            <span class="badge bg-info">{{ s.total_daftar|default(0) }}</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalEdit{{ s.id_siswa }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <form method="POST" action="{{ url_for('hapus_siswa', id_siswa=s.id_siswa) }}" class="d-inline" onsubmit="return confirm('Yakin hapus siswa ini? Semua pendaftarannya akan terhapus.')">
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    
+                    <!-- Modal Edit Siswa -->
+                    <div class="modal fade modal-custom" id="modalEdit{{ s.id_siswa }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Data Siswa</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form method="POST" action="{{ url_for('edit_siswa', id_siswa=s.id_siswa) }}">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">NIS</label>
+                                            <input type="text" name="nis" class="form-control" value="{{ s.nis }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Nama Siswa</label>
+                                            <input type="text" name="nama_siswa" class="form-control" value="{{ s.nama_siswa }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Kelas</label>
+                                            <input type="text" name="kelas" class="form-control" value="{{ s.kelas }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" name="email" class="form-control" value="{{ s.email }}">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Tambah Siswa -->
+<div class="modal fade modal-custom" id="modalTambah" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i>Tambah Siswa Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('tambah_siswa') }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">NIS</label>
+                        <input type="text" name="nis" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nama Siswa</label>
+                        <input type="text" name="nama_siswa" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Kelas</label>
+                        <input type="text" name="kelas" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

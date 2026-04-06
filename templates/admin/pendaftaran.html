@@ -1,0 +1,105 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Kelola Pendaftaran{% endblock %}
+{% block page_title %}Kelola Pendaftaran{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-white">
+        <h5 class="mb-0"><i class="fas fa-clipboard-list me-2 text-primary"></i>Daftar Pendaftaran Ekskul</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>NIS</th>
+                        <th>Nama Siswa</th>
+                        <th>Kelas</th>
+                        <th>Ekskul</th>
+                        <th>Pembina</th>
+                        <th>Tanggal Daftar</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in pendaftaran %}
+                    <tr>
+                        <td>{{ p.id_pendaftaran }}</td>
+                        <td>{{ p.nis }}</td>
+                        <td><strong>{{ p.nama_siswa }}</strong></td>
+                        <td>{{ p.kelas }}</td>
+                        <td>{{ p.nama_ekskul }}</td>
+                        <td>{{ p.pembina }}</td>
+                        <td>{{ p.tanggal_daftar }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'warning' if p.status == 'pending' else 'success' if p.status == 'diterima' else 'danger' }}">
+                                {{ p.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <form method="POST" action="{{ url_for('update_status_pendaftaran', id_pendaftaran=p.id_pendaftaran) }}" class="d-inline">
+                                    <input type="hidden" name="status" value="diterima">
+                                    <button type="submit" class="btn btn-sm btn-success" {{ 'disabled' if p.status != 'pending' else '' }}>
+                                        <i class="fas fa-check"></i> Terima
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ url_for('update_status_pendaftaran', id_pendaftaran=p.id_pendaftaran) }}" class="d-inline">
+                                    <input type="hidden" name="status" value="ditolak">
+                                    <button type="submit" class="btn btn-sm btn-danger" {{ 'disabled' if p.status != 'pending' else '' }}>
+                                        <i class="fas fa-times"></i> Tolak
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ url_for('hapus_pendaftaran', id_pendaftaran=p.id_pendaftaran) }}" class="d-inline" onsubmit="return confirm('Yakin hapus pendaftaran ini?')">
+                                    <button type="submit" class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-5">
+                            <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                            Belum ada data pendaftaran
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Statistik Pendaftaran -->
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <h5>Pending</h5>
+                <h2>{{ pendaftaran|selectattr('status', 'equalto', 'pending')|list|length }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h5>Diterima</h5>
+                <h2>{{ pendaftaran|selectattr('status', 'equalto', 'diterima')|list|length }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-danger text-white">
+            <div class="card-body text-center">
+                <h5>Ditolak</h5>
+                <h2>{{ pendaftaran|selectattr('status', 'equalto', 'ditolak')|list|length }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

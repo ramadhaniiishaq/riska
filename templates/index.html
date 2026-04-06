@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pendaftaran Ekskul</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #F13E93 0%, #F891BB 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .card-role {
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .card-role:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .card-role .card-header {
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        .card-role .card-body {
+            padding: 30px;
+            text-align: center;
+        }
+        .role-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        .btn-role {
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-role:hover {
+            transform: scale(1.05);
+        }
+        .card-role .card-header {
+            background: linear-gradient(135deg, #F13E93, #F891BB);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .btn-role {
+            background: linear-gradient(135deg, #F13E93, #F891BB);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="container">
+            <div class="text-center text-white mb-5">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-chalkboard-user me-3"></i>Sistem Pendaftaran Ekskul
+                </h1>
+                <p class="lead">Kelola dan daftarkan diri Anda ke berbagai ekskul dengan mudah</p>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <!-- Admin Card -->
+                <div class="col-md-5 col-lg-4">
+                    <div class="card card-role shadow-lg">
+                        <div class="card-header bg-gradient-primary">
+                            <div class="role-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3 class="mb-0">Admin</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted">Kelola ekskul, siswa, dan semua pendaftaran</p>
+                            <a href="{{ url_for('login_admin') }}" class="btn btn-primary btn-role px-4">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login sebagai Admin
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Siswa Card -->
+                <div class="col-md-5 col-lg-4">
+                    <div class="card card-role shadow-lg">
+                        <div class="card-header bg-success">
+                            <div class="role-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <h3 class="mb-0">Siswa</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted">Lihat ekskul dan daftarkan diri Anda</p>
+                            <a href="{{ url_for('login_siswa') }}" class="btn btn-success btn-role px-4">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login sebagai Siswa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <small class="text-white-50">
+                    <i class="fas fa-info-circle me-1"></i> Untuk admin: username "admin", password "admin123"
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
